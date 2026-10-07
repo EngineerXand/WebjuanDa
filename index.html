@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan David | Liderazgo con Resultados - Campaña Oficial</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Leaflet CSS & JS for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0B192C',
+                            blue: '#1E3E62',
+                            emerald: '#10B981',
+                            emeraldDark: '#059669',
+                            amber: '#F59E0B',
+                            light: '#F8FAFC'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Leaflet Custom Popup Styling */
+        .leaflet-popup-content-wrapper {
+            border-radius: 1rem !important;
+            padding: 0 !important;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        }
+        .leaflet-popup-content {
+            margin: 0 !important;
+            width: 290px !important;
+        }
+        .leaflet-container {
+            font-family: 'Inter', sans-serif !important;
+            z-index: 10;
+        }
+
+        /* Custom Pulse Animation for Map Markers */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            80%, 100% { transform: scale(2.2); opacity: 0; }
+        }
+        .marker-pulse::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            background-color: inherit;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            z-index: -1;
+        }
+
+        /* Hero Pattern Overlay */
+        .hero-bg {
+            background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 45%),
+                        radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.12) 0%, transparent 45%),
+                        linear-gradient(135deg, #0B192C 0%, #162E4D 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-emerald selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-brand-emerald text-white text-xs sm:text-sm py-2 px-4 text-center font-medium">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+            <span class="bg-white/20 px-2 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider">En Territorio</span>
+            <span>Explora nuestro <strong>Mapa Interactivo de Gestión</strong> y conoce cada obra realizada barrio a barrio.</span>
+            <a href="#mapa-gestion" class="underline font-bold hover:text-amber-200 transition ml-1">Ir al mapa <i class="fa-solid fa-arrow-right ml-1"></i></a>
+        </div>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <header id="navbar" class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand / Candidate Logo -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-navy to-brand-blue flex items-center justify-center text-white font-display font-extrabold text-xl shadow-md group-hover:scale-105 transition-transform relative">
+                        JD
+                        <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-brand-emerald rounded-full border-2 border-white"></span>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-xl tracking-tight text-brand-navy block leading-none">JuanDa</span>
+                        <span class="text-[11px] font-semibold uppercase tracking-widest text-brand-emeraldDark block mt-1">#Hagamoslodistinto</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+                    <a href="#quien-es" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-navy hover:bg-slate-100 transition">¿Quién es?</a>
+                    <a href="#estudios" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-navy hover:bg-slate-100 transition">Estudios</a>
+                    <a href="#mision-vision" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-navy hover:bg-slate-100 transition">Misión y Visión</a>
+                    <a href="#logros" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-brand-navy hover:bg-slate-100 transition">Logros</a>
+                    <a href="#mapa-gestion" class="px-3.5 py-2 rounded-lg text-sm font-bold text-brand-emeraldDark bg-emerald-50 hover:bg-emerald-100 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-map-location-dot"></i> Mapa de Gestión
+                    </a>
+                </nav>
+
+                <!-- CTA Button & Mobile Menu Toggle -->
+                <div class="flex items-center gap-3">
+                    <a href="#unete" class="hidden sm:inline-flex items-center gap-2 bg-brand-navy hover:bg-brand-blue text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-handshake-angle text-brand-amber"></i>
+                        <span>Sumarse a la Campaña</span>
+                    </a>
+                    <button id="mobile-menu-btn" aria-label="Abrir menú" class="lg:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 space-y-2 shadow-xl">
+            <a href="#quien-es" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-100">¿Quién es Juan David?</a>
+            <a href="#estudios" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-100">Estudios y Preparación</a>
+            <a href="#mision-vision" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-100">Misión, Visión y Pilares</a>
+            <a href="#logros" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:bg-slate-100">Logros Destacados</a>
+            <a href="#mapa-gestion" class="mobile-link block px-4 py-2.5 rounded-xl text-base font-bold text-brand-emeraldDark bg-emerald-50">
+                <i class="fa-solid fa-map-location-dot mr-2"></i>Mapa Interactivo de Obras
+            </a>
+            <div class="pt-2">
+                <a href="#unete" class="mobile-link w-full flex items-center justify-center gap-2 bg-brand-navy text-white font-bold py-3 rounded-xl shadow-md">
+                    <i class="fa-solid fa-users text-brand-amber"></i> Sumarse al Equipo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-bg text-white relative overflow-hidden pt-12 pb-20 lg:py-24">
+        <!-- Decorative background shapes -->
+        <div class="absolute top-10 right-10 w-72 h-72 bg-brand-emerald/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-10 left-10 w-80 h-80 bg-brand-amber/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Copy & CTAs -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm text-emerald-300 text-xs sm:text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-brand-emerald animate-ping"></span>
+                        <span>Campaña Ciudadana • El Futuro se Construye con Hechos</span>
+                    </div>
+
+                    <h1 class="font-display font-extrabold text-4xl sm:text-5xl xl:text-6xl leading-tight tracking-tight">
+                        Menos promesas,<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-200 to-amber-300">
+                            más obras en tu territorio.
+                        </span>
+                    </h1>
+
+                    <!--Descripcion de juandavid-->
+                    <p class="text-slate-300 text-base sm:text-lg xl:text-xl max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Soy <strong class="text-white font-semibold">Juan David</strong>, un líder formado en la academia y forjado en el trabajo comunitario. Creemos en la política que se puede ver, medir y localizar en cada barrio de nuestra ciudad.
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#mapa-gestion" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-emerald hover:bg-brand-emeraldDark text-white font-bold px-7 py-4 rounded-2xl shadow-lg shadow-emerald-900/40 transition-all transform hover:-translate-y-0.5 text-base">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                            <span>Explorar Mapa de Obras</span>
+                        </a>
+                        <a href="#quien-es" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-semibold px-7 py-4 rounded-2xl backdrop-blur-sm transition-all text-base">
+                            <i class="fa-solid fa-user-graduate text-brand-amber"></i>
+                            <span>Conoce mi Historia</span>
+                        </a>
+                    </div>
+
+                    <!-- Quick Stats Row -->
+                    <div class="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-white/10 text-left">
+                        <div class="bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-display font-extrabold text-2xl sm:text-3xl text-emerald-400">+7</p>
+                            <p class="text-xs text-slate-300 mt-0.5">Años de liderazgo social y público</p>
+                        </div>
+                        <div class="bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-display font-extrabold text-2xl sm:text-3xl text-amber-400">+60</p>
+                            <p class="text-xs text-slate-300 mt-0.5">Proyectos gestionados en barrios</p>
+                        </div>
+                        <div class="bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-display font-extrabold text-2xl sm:text-3xl text-white">+6k</p>
+                            <p class="text-xs text-slate-300 mt-0.5">Ciudadanos impactados directamente</p>
+                        </div>
+                        <div class="bg-white/5 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-display font-extrabold text-2xl sm:text-3xl text-emerald-400">100%</p>
+                            <p class="text-xs text-slate-300 mt-0.5">Transparencia y rendición de cuentas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Candidate Portrait Card -->
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-md">
+                        <!-- Background Accent Card -->
+                        <div class="absolute -inset-2 bg-gradient-to-tr from-brand-emerald to-brand-amber rounded-3xl opacity-30 blur-lg"></div>
+                        
+                        <div class="relative bg-slate-800/90 border border-white/15 rounded-3xl overflow-hidden shadow-2xl">
+                            <!-- Candidate Image with Fallback -->
+                            <div class="relative aspect-[4/4.3] w-full overflow-hidden bg-slate-900">
+                                <img 
+                                    src="fotos juanda/el en buso blanco.jpeg" 
+                                    onerror="this.src='https://placehold.co/600x650/1E3E62/FFFFFF?text=Juan+David+Candidato'"
+                                    alt="Juan David - Líder Político" 
+                                    class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/20 to-transparent"></div>
+                                
+                                <!-- Floating Badge Top Left -->
+                                <div class="absolute top-4 left-4 bg-brand-navy/85 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-xl flex items-center gap-2">
+                                    <i class="fa-solid fa-certificate text-brand-amber"></i>
+                                    <span class="text-xs font-semibold text-white">Gestión Comprobable</span>
+                                </div>
+
+                                <!-- Bottom Candidate Overlay Info -->
+                                <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md text-brand-navy p-4 rounded-2xl shadow-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h2 class="font-display font-extrabold text-xl">JuanDa</h2>
+                                            <p class="text-xs font-medium text-slate-600">Abogado Especialista en derecho administrativo, maestrando en ciudad y urbanismo • Líder Comunitario</p>
+                                        </div>
+                                        <a href="#mapa-gestion" class="w-10 h-10 rounded-xl bg-brand-emerald text-white flex items-center justify-center shadow hover:bg-brand-emeraldDark transition" title="Ver obras en el mapa">
+                                            <i class="fa-solid fa-map-pin"></i>
+                                        </a>
+                                    </div>
+                                    <div class="mt-3 pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-600">
+                                        <span><i class="fa-solid fa-quote-left text-brand-emerald mr-1"></i> Trabajando desde las bases</span>
+                                        <span class="font-bold text-brand-navy">#JuanDavidCumple</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: ¿Quién es Juan David? & Estudios -->
+    <section id="quien-es" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Biography Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Image Collage / Story -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="relative rounded-3xl overflow-hidden shadow-xl border border-slate-100">
+                        <img 
+                            src="fotos juanda/juanda en camisa.jpeg" 
+                            onerror="this.src='https://placehold.co/600x450/0B192C/10B981?text=Trabajo+Comunitario'"
+                            alt="Juan David con la comunidad" 
+                            class="w-full h-50 object-cover"
+                        >
+                        <div class="bg-brand-navy text-white p-5">
+                            <p class="text-sm italic text-slate-200">"Mi compromiso no nació en una oficina, nació caminando nuestras calles, escuchando a las madres cabeza de hogar, a los jóvenes y a nuestros emprendedores."</p>
+                            <p class="text-xs font-bold text-brand-emerald mt-2 uppercase tracking-wider">— Juan David</p>
+                        </div>
+                    </div>
+
+                    <!-- Value Pills -->
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70">
+                            <i class="fa-solid fa-ear-listen text-brand-emerald text-xl mb-1"></i>
+                            <h4 class="font-bold text-xs text-brand-navy">Escucha Activa</h4>
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70">
+                            <i class="fa-solid fa-hands-holding-circle text-brand-amber text-xl mb-1"></i>
+                            <h4 class="font-bold text-xs text-brand-navy">Manos Limpias</h4>
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70">
+                            <i class="fa-solid fa-chart-line text-brand-blue text-xl mb-1"></i>
+                            <h4 class="font-bold text-xs text-brand-navy">Capacidad Técnica</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Biography Content -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-brand-emeraldDark text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-user-check"></i> Conoce al Líder
+                    </div>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-brand-navy leading-tight">
+                        ¿Quién es Juan David? Un ciudadano al servicio de nuestra gente
+                    </h2>
+                    <p class="text-slate-600 leading-relaxed text-base sm:text-lg">
+                        Hijo de una familia trabajadora, <strong>Juan David</strong> entendió desde muy joven que la educación y la organización comunitaria son las herramientas más poderosas para transformar realidades. Comenzó su liderazgo en juntas de acción comunal y colectivos juveniles, gestionando soluciones reales sin esperar cargos públicos.
+                    </p>
+                    <p class="text-slate-600 leading-relaxed text-base">
+                        A lo largo de más de una década, ha combinado su rigurosa preparación académica con el trabajo incansable en el territorio: desde la recuperación de parques y polideportivos, hasta programas de becas estudiantiles, mejoramiento vial e impulso a miles de microempresarios locales.
+                    </p>
+
+                    <!-- Key Highlights List -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start gap-3.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-brand-emeraldDark flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-people-group"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-brand-navy text-sm">Liderazgo Cercano</h3>
+                                <p class="text-xs text-slate-600 mt-1">Presencia permanente en barrios y veredas, construyendo presupuestos participativos.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3.5 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-Lightbulb"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-brand-navy text-sm">Visión Moderna</h3>
+                                <p class="text-xs text-slate-600 mt-1">Uso de datos, tecnología y planeación estratégica para que cada peso público rinda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-section: Estudios y Formación Académica -->
+            <div id="estudios" class="mt-24 pt-16 border-t border-slate-200">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 text-brand-blue text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-graduation-cap"></i> Preparación y Excelencia
+                    </span>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-brand-navy mt-3">
+                        Estudios y Formación Académica
+                    </h2>
+                    <p class="text-slate-600 mt-3 text-base">
+                        Para gobernar y gestionar con seriedad se requiere preparación. Juan David cuenta con una sólida formación para tomar las mejores decisiones por nuestra región.
+                    </p>
+                </div>
+
+                <!-- Academic Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Degree 1 -->
+                    <div class="bg-slate-50 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-brand-emerald hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-brand-navy text-white flex items-center justify-center text-xl group-hover:bg-brand-emerald transition-colors">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </span>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-slate-200 text-slate-700">Pregrado</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-brand-navy">Administrador Público / Economista</h3>
+                            <p class="text-xs font-semibold text-brand-emeraldDark mt-1">Universidad Nacional / ESAP</p>
+                            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                                Formación en finanzas territoriales, contratación estatal transparente y diseño de políticas públicas orientadas al ciudadano.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+                            <span>Tesis Meritoria</span>
+                            <i class="fa-solid fa-award text-brand-amber text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Degree 2 -->
+                    <div class="bg-slate-50 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-brand-emerald hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-brand-navy text-white flex items-center justify-center text-xl group-hover:bg-brand-emerald transition-colors">
+                                    <i class="fa-solid fa-Chart-pie"></i>
+                                </span>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800">Especialización</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-brand-navy">Especialista en Gerencia de Proyectos</h3>
+                            <p class="text-xs font-semibold text-brand-emeraldDark mt-1">Universidad de los Llanos / Externado</p>
+                            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                                Experto en estructuración de proyectos de inversión (MGA), regalías y ejecución eficiente de obras de infraestructura social.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+                            <span>Enfoque en Resultados</span>
+                            <i class="fa-solid fa-check-double text-brand-emerald text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Degree 3 -->
+                    <div class="bg-slate-50 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-brand-emerald hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-brand-navy text-white flex items-center justify-center text-xl group-hover:bg-brand-emerald transition-colors">
+                                    <i class="fa-solid fa-user-graduate"></i>
+                                </span>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-800">Maestría</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-brand-navy">Magíster en Gobierno y Gestión Territorial</h3>
+                            <p class="text-xs font-semibold text-brand-emeraldDark mt-1">Pontificia Universidad Javeriana</p>
+                            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                                Investigación aplicada en desarrollo urbano sostenible, seguridad ciudadana e innovación social para municipios en crecimiento.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+                            <span>Becario de Excelencia</span>
+                            <i class="fa-solid fa-star text-brand-amber text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Degree 4 -->
+                    <div class="bg-slate-50 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-brand-emerald hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="w-12 h-12 rounded-2xl bg-brand-navy text-white flex items-center justify-center text-xl group-hover:bg-brand-emerald transition-colors">
+                                    <i class="fa-solid fa-earth-americas"></i>
+                                </span>
+                                <span class="text-xs font-bold px-3 py-1 rounded-full bg-blue-100 text-blue-800">Certificaciones</span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-brand-navy">Liderazgo Político y Ciudades Inteligentes</h3>
+                            <p class="text-xs font-semibold text-brand-emeraldDark mt-1">Programas Internacionales (BID / OEA)</p>
+                            <p class="text-sm text-slate-600 mt-3 leading-relaxed">
+                                Diplomados en presupuesto participativo, gobierno abierto, transición energética y reactivación económica local.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+                            <span>Visión Global</span>
+                            <i class="fa-solid fa-globe text-brand-blue text-base"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section: Misión, Visión y Pilares -->
+    <section id="mision-vision" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <!-- Subtle background glow -->
+        <div class="absolute top-0 left-1/3 w-96 h-96 bg-brand-emerald/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-compass"></i> Nuestro Rumbo
+                </span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl mt-3">
+                    Misión, Visión y Propósito de Campaña
+                </h2>
+                <p class="text-slate-300 mt-3 text-base">
+                    No improvisamos. Tenemos una hoja de ruta clara, construida junto a líderes barriales, gremios, jóvenes y expertos.
+                </p>
+            </div>
+
+            <!-- Mission & Vision Dual Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+                <!-- Misión Card -->
+                <div class="bg-gradient-to-br from-slate-800 to-slate-800/70 border border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-brand-emerald/10 rounded-bl-full transition-transform group-hover:scale-110"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-brand-emerald text-white flex items-center justify-center text-2xl shadow-lg mb-6">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Nuestro Compromiso Diario</span>
+                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl mt-1 mb-4">Nuestra Misión</h3>
+                    <p class="text-slate-300 leading-relaxed text-base sm:text-lg">
+                        Representar y servir con integridad a cada ciudadano, gestionando recursos e implementando soluciones reales en educación, infraestructura digna, empleo y seguridad humana; garantizando que los impuestos se traduzcan en obras visibles en cada barrio y vereda, sin corrupción ni politiquería.
+                    </p>
+                    <ul class="mt-6 space-y-2.5 text-sm text-slate-200">
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-brand-emerald"></i> Presupuesto público transparente y participativo.</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-brand-emerald"></i> Atención directa en las comunidades, sin intermediarios.</li>
+                    </ul>
+                </div>
+
+                <!-- Visión Card -->
+                <div class="bg-gradient-to-br from-slate-800 to-slate-800/70 border border-white/10 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-36 h-36 bg-brand-amber/10 rounded-bl-full transition-transform group-hover:scale-110"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-brand-amber text-brand-navy flex items-center justify-center text-2xl shadow-lg mb-6">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Hacia Dónde Vamos (2026 - 2030)</span>
+                    <h3 class="font-display font-extrabold text-2xl sm:text-3xl mt-1 mb-4">Nuestra Visión</h3>
+                    <p class="text-slate-300 leading-relaxed text-base sm:text-lg">
+                        Consolidar a nuestro territorio como un referente nacional de progreso equitativo, oportunidades juveniles, movilidad moderna y sostenibilidad ambiental; donde cada familia viva segura, orgullosa de su barrio y con acceso a servicios públicos, salud y educación de primera calidad.
+                    </p>
+                    <ul class="mt-6 space-y-2.5 text-sm text-slate-200">
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-brand-amber"></i> Territorio líder en empleo joven y emprendimiento digital.</li>
+                        <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-brand-amber"></i> 100% de las obras georreferenciadas y vigiladas por la ciudadanía.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4 Strategic Pillars -->
+            <div>
+                <h3 class="text-center font-display font-bold text-xl text-slate-200 mb-8">Los 4 Ejes de Nuestro Plan de Gobierno</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition">
+                        <i class="fa-solid fa-road-bridge text-2xl text-emerald-400 mb-3"></i>
+                        <h4 class="font-bold text-lg">1. Obras para la Gente</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">Pavimentación barrial, acueductos comunitarios, alumbrado LED y parques biosaludables.</p>
+                    </div>
+                    <div class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition">
+                        <i class="fa-solid fa-laptop-code text-2xl text-amber-400 mb-3"></i>
+                        <h4 class="font-bold text-lg">2. Educación y Futuro</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">Becas universitarias, aulas STEAM, conectividad gratuita en colegios y apoyo al deporte.</p>
+                    </div>
+                    <div class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition">
+                        <i class="fa-solid fa-store text-2xl text-sky-400 mb-3"></i>
+                        <h4 class="font-bold text-lg">3. Empleo e Impulso Local</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">Capital semilla para emprendedores, compras públicas a productores locales y primer empleo.</p>
+                    </div>
+                    <div class="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 transition">
+                        <i class="fa-solid fa-shield-halved text-2xl text-rose-400 mb-3"></i>
+                        <h4 class="font-bold text-lg">4. Seguridad y Entorno</h4>
+                        <p class="text-xs text-slate-300 mt-2 leading-relaxed">Frentes de seguridad con tecnología, iluminación de entornos escolares y protección ambiental.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Mapa Interactivo de Gestión y Logros -->
+    <section id="mapa-gestion" class="py-20 bg-slate-100 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Header & Official Verification Controls -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 text-brand-emeraldDark text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-shield-check"></i> Geoportal Oficial Verificado • Villavicencio
+                    </div>
+                    <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-brand-navy mt-2">
+                        Mapa de Gestión: ¿Qué hemos hecho y dónde?
+                    </h2>
+                    <p class="text-slate-600 mt-2 max-w-2xl text-sm sm:text-base">
+                        Explora las obras, gestiones comunitarias y proyectos liderados por <strong>Juan David</strong> en cada comuna y vereda. Haz clic en cualquier marcador para ver fotografías, impacto real y compartir el logro.
+                    </p>
+                </div>
+
+                <!-- Voter Controls: Map Style Switcher & Reset View -->
+                <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <!-- Map Tile Switcher (100% Free & No API Key - OpenStreetMap & Esri Satellite) -->
+                    <div class="inline-flex bg-white p-1 rounded-xl border border-slate-300 shadow-sm">
+                        <button type="button" id="tile-osm-btn" class="px-3 py-2 rounded-lg text-xs font-bold bg-brand-navy text-white transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-map-location-dot"></i> Mapa de Calles
+                        </button>
+                        <button type="button" id="tile-sat-btn" class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-brand-navy transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-satellite"></i> Vista Satélite
+                        </button>
+                    </div>
+
+                    <button type="button" id="reset-map-btn" class="inline-flex items-center gap-2 bg-brand-emerald hover:bg-brand-emeraldDark text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl shadow transition" title="Ver todos los puntos en el territorio">
+                        <i class="fa-solid fa-expand"></i>
+                        <span>Ver Todo el Territorio</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Impact Summary Banner for Voters -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl p-4 mb-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-brand-emeraldDark flex items-center justify-center shrink-0 text-lg">
+                        <i class="fa-solid fa-map-pin"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs sm:text-sm font-bold text-brand-navy" id="impact-banner-title">
+                            Mostrando 8 obras verificadas en el territorio
+                        </p>
+                        <p class="text-xs text-slate-500">
+                            Datos oficiales de campaña • Cobertura en comunas, barrios y sectores rurales (+28,500 beneficiarios directos)
+                        </p>
+                    </div>
+                </div>
+                <a href="#unete" class="text-xs font-bold text-brand-emeraldDark hover:text-brand-navy bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shrink-0">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> ¿Tu barrio necesita una gestión? Escríbenos
+                </a>
+            </div>
+
+            <!-- Category Filter Pills for Map -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar" id="map-filter-container">
+                <button data-category="all" class="map-filter-btn active shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-brand-navy text-white shadow transition flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group"></i> Todos los Logros (<span id="count-all">8</span>)
+                </button>
+                <button data-category="Infraestructura" class="map-filter-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 hover:bg-slate-200/70 border border-slate-200/80 transition flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Infraestructura y Vías
+                </button>
+                <button data-category="Educación" class="map-filter-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 hover:bg-slate-200/70 border border-slate-200/80 transition flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Educación y Tecnología
+                </button>
+                <button data-category="Social" class="map-filter-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 hover:bg-slate-200/70 border border-slate-200/80 transition flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Gestión Social y Salud
+                </button>
+                <button data-category="Deporte" class="map-filter-btn shrink-0 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white text-slate-700 hover:bg-slate-200/70 border border-slate-200/80 transition flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Deporte y Parques
+                </button>
+            </div>
+
+            <!-- Main Map + Sidebar Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-3 sm:p-4 rounded-3xl shadow-xl border border-slate-200/90">
+                
+                <!-- Left/Sidebar: Interactive List of Official Locations -->
+                <div class="lg:col-span-4 flex flex-col h-[390px] lg:h-[580px]">
+                    <div class="pb-3 mb-2 border-b border-slate-100 flex items-center justify-between px-2">
+                        <div>
+                            <h3 class="font-display font-bold text-base text-brand-navy">Obras por Sector / Barrio</h3>
+                            <p class="text-xs text-slate-500">Toca una obra para volar al punto exacto</p>
+                        </div>
+                        <span id="sidebar-counter" class="bg-emerald-100 text-brand-emeraldDark text-xs font-extrabold px-2.5 py-1 rounded-lg">8 lugares</span>
+                    </div>
+
+                    <!-- Search input inside sidebar -->
+                    <div class="px-1 mb-3">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="map-search-input" placeholder="Buscar barrio (ej. Porfía, Barzal, Reliquia)..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-brand-emerald">
+                        </div>
+                    </div>
+
+                    <!-- Scrollable List Container -->
+                    <div id="map-locations-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Right: Interactive Leaflet Map (Keyless OpenStreetMap & Esri Satellite) -->
+                <div class="lg:col-span-8 relative rounded-2xl overflow-hidden border border-slate-200 h-[440px] lg:h-[580px]">
+                    <div id="campaign-map" class="w-full h-full"></div>
+
+                    <!-- Floating Map Legend -->
+                    <div class="absolute bottom-4 left-4 z-[400] bg-white/95 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-slate-200 text-xs hidden sm:block">
+                        <p class="font-bold text-brand-navy mb-1.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info text-brand-emerald"></i> Convenciones del Mapa:
+                        </p>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-600">
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Infraestructura</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Educación</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Social / Salud</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span> Deporte / Parques</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Galería de Logros y Resultados -->
+    <section id="logros" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-trophy"></i> Hechos que Hablan
+                </span>
+                <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-brand-navy mt-3">
+                    Logros Destacados de Nuestra Gestión
+                </h2>
+                <p class="text-slate-600 mt-2 text-base">
+                    Cada proyecto gestionado por Juan David responde a una necesidad sentida de la comunidad. Puedes ver la <strong>Ficha de Impacto</strong> o hacer clic en <strong>"Ubicar en el Mapa"</strong> para ir a su localización exacta.
+                </p>
+            </div>
+
+            <!-- Achievements Cards Container (Rendered dynamically to stay synced with Map) -->
+            <div id="achievements-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal: Ficha Técnica y Detalle de Obra -->
+    <div id="work-detail-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/75 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 animate-fadeIn">
+            <!-- Modal Image Header -->
+            <div class="relative h-60 sm:h-72 bg-slate-900">
+                <img id="modal-img" src="" alt="Obra de Juan David" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/30 to-transparent"></div>
+                
+                <button type="button" id="close-modal-btn" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-brand-navy/80 hover:bg-brand-navy text-white flex items-center justify-center transition shadow-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <span id="modal-category-badge" class="absolute top-4 left-4 px-3.5 py-1 rounded-full text-xs font-bold shadow"></span>
+
+                <div class="absolute bottom-4 left-6 right-6 text-white">
+                    <p id="modal-sector" class="text-xs sm:text-sm font-bold text-emerald-300 flex items-center gap-1.5"></p>
+                    <h3 id="modal-title" class="font-display font-extrabold text-xl sm:text-2xl mt-1 leading-tight"></h3>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 sm:p-8 space-y-5">
+                <!-- Key Metrics Strip -->
+                <div class="grid grid-cols-3 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 text-center">
+                    <div>
+                        <span class="text-[11px] uppercase font-bold text-slate-400 block">Beneficiarios</span>
+                        <span id="modal-beneficiaries" class="font-display font-extrabold text-sm sm:text-base text-brand-navy mt-0.5 block"></span>
+                    </div>
+                    <div class="border-x border-slate-200 px-2">
+                        <span class="text-[11px] uppercase font-bold text-slate-400 block">Estado / Año</span>
+                        <span id="modal-status" class="font-display font-extrabold text-sm sm:text-base text-brand-emeraldDark mt-0.5 block"></span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] uppercase font-bold text-slate-400 block">Inversión / Gestión</span>
+                        <span id="modal-investment" class="font-display font-extrabold text-sm sm:text-base text-brand-navy mt-0.5 block"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">¿Qué se hizo exactamente en este lugar?</h4>
+                    <p id="modal-description" class="text-slate-700 text-sm sm:text-base leading-relaxed"></p>
+                </div>
+
+                <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 flex items-start gap-3">
+                    <i class="fa-solid fa-quote-left text-brand-emerald text-xl shrink-0 mt-0.5"></i>
+                    <p id="modal-community-quote" class="text-xs sm:text-sm text-emerald-950 italic leading-relaxed"></p>
+                </div>
+
+                <!-- Modal Footer Actions -->
+                <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <button type="button" id="modal-locate-btn" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-navy hover:bg-brand-blue text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition">
+                        <i class="fa-solid fa-location-crosshairs text-brand-emerald"></i>
+                        <span>Acercar Ubicación en el Mapa</span>
+                    </button>
+                    <a id="modal-whatsapp-share" href="#" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition shadow">
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                        <span>Compartir Logro por WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Únete al Equipo / Contacto Ciudadano -->
+    <section id="unete" class="py-20 bg-gradient-to-b from-slate-50 to-slate-200/60 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-navy rounded-3xl shadow-2xl overflow-hidden border border-white/10">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    
+                    <!-- Left Column: Info & Direct Channels -->
+                    <div class="lg:col-span-5 p-8 sm:p-12 bg-gradient-to-br from-brand-navy via-brand-blue to-slate-900 text-white flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 rounded-full bg-brand-emerald/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4">
+                                Súmate al Cambio
+                            </span>
+                            <h2 class="font-display font-extrabold text-3xl sm:text-4xl leading-tight">
+                                ¿Qué necesita tu barrio? Hagámoslo realidad juntos.
+                            </h2>
+                            <p class="text-slate-300 mt-4 text-sm sm:text-base leading-relaxed">
+                                Déjanos tus datos para unirte al voluntariado de campaña, invitarnos a una reunión en tu cuadra o proponernos una gestión prioritaria para tu comunidad.
+                            </p>
+
+                            <div class="mt-8 space-y-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-brand-emerald text-lg">
+                                        <i class="fa-solid fa-house-flag"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Sede Principal de Campaña</p>
+                                        <p class="text-sm font-semibold">Av. 40 Sector Barzal, Villavicencio - Meta</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-brand-amber text-lg">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400">WhatsApp Oficial de Campaña</p>
+                                        <p class="text-sm font-semibold">+57 (310) 283 6849</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-sky-400 text-lg">
+                                        <i class="fa-solid fa-envelope-open-text"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Correo de Propuestas</p>
+                                        <p class="text-sm font-semibold">equipo@juandavidlider.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="mt-10 pt-6 border-t border-white/10">
+                            <p class="text-xs text-slate-400 mb-3">Sigue nuestra gestión diaria en redes:</p>
+                            <div class="flex items-center gap-3">
+                                <a href="#unete" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-brand-emerald text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#unete" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-brand-emerald text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#unete" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-brand-emerald text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>
+                                <a href="#unete" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-brand-emerald text-white flex items-center justify-center transition"><i class="fa-brands fa-x-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Registration Form -->
+                    <div class="lg:col-span-7 p-8 sm:p-12 bg-white">
+                        <h3 class="font-display font-bold text-2xl text-brand-navy mb-2">Inscríbete en el Equipo de Juan David</h3>
+                        <p class="text-slate-500 text-sm mb-6">Completa el formulario para registrarte o enviarnos tu mensaje directo al WhatsApp oficial de coordinación.</p>
+
+                        <!-- Added novalidate on purpose so we can handle validation via JS cleanly for both buttons -->
+                        <form id="volunteer-form" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Nombre Completo *</label>
+                                    <input type="text" id="volName" required placeholder="Ej. María Fernanda Gómez" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-emerald">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Teléfono / WhatsApp *</label>
+                                    <input type="tel" id="volPhone" required placeholder="Ej. 310 555 9876" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-emerald">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Barrio / Vereda / Comuna *</label>
+                                    <input type="text" id="volSector" required placeholder="Ej. Barrio Porfía / La Esperanza" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-emerald">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">¿Cómo quieres participar?</label>
+                                    <select id="volRole" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-brand-emerald">
+                                        <option value="Voluntario y líder en mi barrio">Ser voluntario / líder en mi barrio</option>
+                                        <option value="Proponer una obra para mi comunidad">Proponer una obra para mi comunidad</option>
+                                        <option value="Organizar reunión con vecinos">Organizar una reunión con vecinos</option>
+                                        <option value="Apoyo en redes y comunicaciones">Apoyar en redes sociales</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Tu Propuesta o Mensaje para Juan David</label>
+                                <textarea id="volMessage" rows="3" placeholder="Cuéntanos qué problemática o idea tienes para tu sector..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-brand-emerald"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                <button type="submit" class="w-full bg-brand-navy hover:bg-brand-blue text-white font-bold py-3.5 px-4 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm">
+                                    <i class="fa-solid fa-check-circle text-brand-emerald"></i>
+                                    <span>Registrarme en la Web</span>
+                                </button>
+                                <button type="button" id="send-whatsapp-btn" class="w-full bg-brand-emerald hover:bg-brand-emeraldDark text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/25 transition flex items-center justify-center gap-2 text-sm">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Enviar Directo por WhatsApp</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Confirmation Toast Box -->
+                        <div id="volunteer-success" class="hidden mt-4 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-center gap-3">
+                            <i class="fa-solid fa-circle-check text-2xl text-brand-emerald"></i>
+                            <div>
+                                <h4 class="font-bold text-sm">¡Gracias por sumarte al equipo de Juan David!</h4>
+                                <p class="text-xs text-emerald-700 mt-0.5">Hemos registrado tus datos correctamente. Si lo deseas, puedes comunicarte ahora directamente a nuestra coordinación.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-navy text-slate-400 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-brand-emerald text-white font-display font-extrabold flex items-center justify-center">
+                    JD
+                </div>
+                <div>
+                    <span class="text-white font-display font-bold text-base">JUAN DAVID • CAMPAÑA OFICIAL</span>
+                    <p class="text-xs text-slate-400">Liderazgo, Preparación y Resultados en el Territorio.</p>
+                </div>
+            </div>
+            <div class="text-xs text-center sm:text-right">
+                <p>© 2026 Equipo de Campaña Juan David. Publicidad Política.</p>
+                <p class="text-slate-500 mt-1">Geoportal ciudadano con cartografía libre OpenStreetMap (Sin API Key).</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ============================================================================
+         * CONFIGURACIÓN OFICIAL DE LA CAMPAÑA DE JUAN DAVID
+         * ============================================================================ */
+        const WHATSAPP_CAMPANA = "573102836849";
+        const MAP_CENTER = [4.1350, -73.6266];  // Villavicencio, Meta
+        const INITIAL_ZOOM = 13;
+        
+        // URL de Google Sheets
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyonHlzBYcAuw-_g1wq0iImhLPAqTycCbim3QzgcaK_Klghrnzh9TylX5P1-MshuxgRrA/exec';
+
+        const categoryStyles = {
+            'Infraestructura': { color: '#F59E0B', badgeBg: 'bg-amber-100 text-amber-800', icon: 'fa-road' },
+            'Educación': { color: '#2563EB', badgeBg: 'bg-blue-100 text-blue-800', icon: 'fa-graduation-cap' },
+            'Social': { color: '#10B981', badgeBg: 'bg-emerald-100 text-emerald-800', icon: 'fa-heart-pulse' },
+            'Deporte': { color: '#9333EA', badgeBg: 'bg-purple-100 text-purple-800', icon: 'fa-futbol' }
+        };
+
+        const OBRAS_OFICIALES = [
+            {
+                id: 1,
+                title: "Pavimentación Comunitaria y Alumbrado Público LED",
+                sector: "Ciudad Porfía - Comuna 8",
+                category: "Infraestructura",
+                coords: [4.0845, -73.6695],
+                beneficiaries: "+4,500 habitantes",
+                year: "Ejecutado • 2024",
+                investment: "Gestión Comunitaria y Municipal",
+                description: "Gestión y ejecución de 1.8 km de mejoramiento vial en tramos críticos del sector y modernización de 85 luminarias LED de alta potencia para garantizar la movilidad y seguridad nocturna de las familias trabajadoras.",
+                quote: "Antes era imposible transitar cuando llovía y las calles eran oscuras.Con la gestión de Juan David hoy nuestros hijos caminan seguros al colegio. — Junta de Acción Comunal Porfía.",
+                image: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 2,
+                title: "Aula STEAM, Robótica y Dotación Tecnológica",
+                sector: "Barrio La Grama / Sector Norte",
+                category: "Educación",
+                coords: [4.1562, -73.6388],
+                beneficiaries: "+1,200 estudiantes",
+                year: "Entregado • 2025",
+                investment: "Alianza Educación Digital",
+                description: "Dotación de 60 equipos de cómputo modernos, kits de programación y robótica educativa, junto con talleres vocacionales en habilidades digitales para jóvenes de grados 9°, 10° y 11°.",
+                quote: "Por primera vez tenemos un laboratorio donde aprendemos programación y diseño real para el futuro laboral. — Representante Estudiantil.",
+                image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 3,
+                title: "Recuperación Integral del Polideportivo y Parque",
+                sector: "Barrio La Esperanza - Comuna 5",
+                category: "Deporte",
+                coords: [4.1328, -73.6185],
+                beneficiaries: "+3,200 jóvenes y familias",
+                year: "Ejecutado • 2024",
+                investment: "Obra Deportiva Barrial",
+                description: "Instalación de cubierta metálica, demarcación técnica de placa polideportiva, máquinas biosaludables para adultos mayores y creación de escuelas deportivas gratuitas los fines de semana.",
+                quote: "El parque volvió a ser de las familias y del deporte, alejando a nuestros niños de los malos pasos. — Club Deportivo La Esperanza.",
+                image: "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 4,
+                title: "Centro de Emprendimiento y Capital Semilla para Mujeres",
+                sector: "Sector Barzal Alto - Comuna 2",
+                category: "Social",
+                coords: [4.1465, -73.6410],
+                beneficiaries: "+850 mujeres emprendedoras",
+                year: "Activo • 2025",
+                investment: "Fondo Impulso Local",
+                description: "Formación práctica en finanzas, marketing digital y entrega de insumos y maquinaria para unidades productivas de confección, gastronomía y comercio lideradas por madres cabeza de hogar.",
+                quote: "Con los equipos y la asesoría logré duplicar las ventas de mi taller y generar dos empleos en mi cuadra. — Beneficiaria del Programa.",
+                image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 5,
+                title: "Optimización de Red de Acueducto Comunitario",
+                sector: "Sector Montecarlo / Comuna 7",
+                category: "Infraestructura",
+                coords: [4.1135, -73.6520],
+                beneficiaries: "+2,800 familias",
+                year: "Ejecutado • 2024",
+                investment: "Saneamiento Básico",
+                description: "Modernización del sistema de bombeo comunitario, cambio de tubería de distribución y adecuación de filtros para asegurar presión y continuidad de agua potable las 24 horas.",
+                quote: "Sufríamos cada semana por cortes de agua. Hoy contamos con un servicio digno y constante para todos los hogares. — Comité de Acueducto.",
+                image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 6,
+                title: "Brigadas Médicas, Salud Visual y Nutrición",
+                sector: "Barrio La Reliquia / Trece de Mayo",
+                category: "Social",
+                coords: [4.1295, -73.5865],
+                beneficiaries: "+5,400 ciudadanos",
+                year: "Permanente • 2025",
+                investment: "Red Solidaria de Salud",
+                description: "Jornadas descentralizadas de medicina general, pediatría, odontología, entrega gratuita de más de 900 lentes formulados a adultos mayores y fortalecimiento de comedores comunitarios.",
+                quote: "Juan David no solo viene en época de elecciones; lleva años trayendo brigadas de salud a nuestro sector. — Lideresa de La Reliquia.",
+                image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 7,
+                title: "Programa de Becas y Transporte 'Jóvenes a la U'",
+                sector: "Corredor Universitario / Kirpas - Catama",
+                category: "Educación",
+                coords: [4.1195, -73.6065],
+                beneficiaries: "+450 jóvenes becados",
+                year: "En Ejecución • 2025",
+                investment: "Fondo Educativo Solidario",
+                description: "Gestión de auxilios de matrícula técnica y universitaria, junto con bono de transporte estudiantil para jóvenes de estratos 1, 2 y 3 con excelencia académica y liderazgo social.",
+                quote: "Este apoyo evitó que tuviera que abandonar mi semestre de ingeniería. Hoy sigo estudiando por mi sueño. — Joven Becario.",
+                image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 8,
+                title: "Cancha Sintética Pública y Corredor Ambiental",
+                sector: "Sector Vanguardia / Norte",
+                category: "Deporte",
+                coords: [4.1720, -73.6190],
+                beneficiaries: "+2,100 deportistas",
+                year: "Entregado • 2025",
+                investment: "Infraestructura Recreativa",
+                description: "Recuperación de terreno en abandono para construir un escenario deportivo con drenaje pluvial, graderías cubiertas, iluminación reflectora y siembra de 350 árboles nativos.",
+                quote: "Pasamos de tener un lote baldío inseguro a tener el mejor escenario deportivo del sector norte. — Escuela Deportiva Vanguardia.",
+                image: "https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=700&q=80"
+            }
+        ];
+
+        let map, markersLayer, markersMap = {}, currentCategory = 'all', searchQuery = '', tileLayerOSM, tileLayerSatellite;
+
+        function initMap() {
+            map = L.map('campaign-map', { center: MAP_CENTER, zoom: INITIAL_ZOOM, scrollWheelZoom: false });
+            map.on('focus', () => map.scrollWheelZoom.enable());
+            map.on('blur', () => map.scrollWheelZoom.disable());
+
+            tileLayerOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 });
+            tileLayerSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 });
+
+            tileLayerOSM.addTo(map);
+            markersLayer = L.layerGroup().addTo(map);
+            renderMapAndLists();
+        }
+
+        function createCustomIcon(category) {
+            const style = categoryStyles[category] || categoryStyles['Social'];
+            return L.divIcon({
+                className: 'custom-leaflet-marker',
+                html: `<div class="relative flex items-center justify-center w-10 h-10 rounded-full text-white shadow-lg border-2 border-white transition-transform hover:scale-110 marker-pulse" style="background-color: ${style.color};"><i class="fa-solid ${style.icon} text-sm"></i></div>`,
+                iconSize: [40, 40], iconAnchor: [20, 20], popupAnchor: [0, -20]
+            });
+        }
+
+        function getShareWhatsAppUrl(item) {
+            const text = `¡Mira lo que ha gestionado nuestro líder *Juan David* en *${item.sector}*! 📍\n\n✅ *${item.title}*\n👥 Impacto: ${item.beneficiaries}\n📝 ${item.description}\n\nConoce más obras en el Mapa Oficial de Gestión.`;
+            return `https://wa.me/?text=${encodeURIComponent(text)}`;
+        }
+
+        function renderMapAndLists() {
+            markersLayer.clearLayers();
+            markersMap = {};
+            const listContainer = document.getElementById('map-locations-list');
+            const gridContainer = document.getElementById('achievements-grid');
+            listContainer.innerHTML = ''; gridContainer.innerHTML = '';
+            document.getElementById('count-all').textContent = OBRAS_OFICIALES.length;
+
+            const filtered = OBRAS_OFICIALES.filter(item => {
+                const matchesCat = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.sector.toLowerCase().includes(searchQuery.toLowerCase()) || item.description.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            document.getElementById('sidebar-counter').textContent = `${filtered.length} ${filtered.length === 1 ? 'obra' : 'obras'}`;
+            document.getElementById('impact-banner-title').textContent = `Mostrando ${filtered.length} ${filtered.length === 1 ? 'obra verificada' : 'obras verificadas'} en el territorio`;
+
+            if (filtered.length === 0) listContainer.innerHTML = `<div class="text-center py-10 px-4 text-slate-400"><i class="fa-solid fa-map-pin text-2xl mb-2"></i><p class="text-xs">No se encontraron obras con ese criterio.</p></div>`;
+
+            filtered.forEach(item => {
+                const style = categoryStyles[item.category] || categoryStyles['Social'];
+                const marker = L.marker(item.coords, { icon: createCustomIcon(item.category) });
+
+                marker.bindPopup(`
+                    <div class="font-sans">
+                        <div class="relative h-32 w-full bg-slate-900">
+                            <img src="${item.image}" onerror="this.src='https://placehold.co/400x250/0B192C/FFFFFF?text=Obra+Juan+David'" class="w-full h-full object-cover">
+                            <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${style.badgeBg} shadow">${item.category}</span>
+                        </div>
+                        <div class="p-3.5">
+                            <p class="text-[11px] font-bold text-brand-emeraldDark flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> ${item.sector}</p>
+                            <h4 class="font-display font-bold text-sm text-brand-navy mt-0.5 leading-snug">${item.title}</h4>
+                            <div class="mt-3 pt-2.5 border-t border-slate-100 flex gap-2">
+                                <button type="button" onclick="openWorkModal(${item.id})" class="flex-1 bg-brand-navy text-white text-[11px] font-bold py-1.5 rounded-lg text-center">Ver Ficha</button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                marker.addTo(markersLayer); markersMap[item.id] = marker;
+
+                const listItem = document.createElement('div');
+                listItem.className = 'p-3.5 rounded-2xl border border-slate-200/80 hover:border-brand-emerald bg-slate-50/70 cursor-pointer group';
+                listItem.innerHTML = `<h4 class="font-display font-bold text-sm text-brand-navy group-hover:text-brand-emeraldDark">${item.title}</h4><p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot"></i> ${item.sector}</p>`;
+                listItem.addEventListener('click', () => focusLocationOnMap(item.id));
+                listContainer.appendChild(listItem);
+
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 rounded-3xl overflow-hidden border border-slate-200/80 hover:shadow-xl transition-all flex flex-col group';
+                card.innerHTML = `
+                    <div class="relative h-48 bg-slate-900">
+                        <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold ${style.badgeBg}"><i class="fa-solid ${style.icon} mr-1"></i>${item.category}</span>
+                        <span class="absolute bottom-3 left-3 text-white text-xs font-semibold"><i class="fa-solid fa-location-dot text-brand-emerald"></i> ${item.sector}</span>
+                    </div>
+                    <div class="p-6 flex-1"><h3 class="font-display font-bold text-lg text-brand-navy leading-snug">${item.title}</h3></div>
+                    <div class="px-6 pb-5 pt-3 border-t border-slate-200/70 flex justify-between items-center">
+                        <button type="button" onclick="openWorkModal(${item.id})" class="text-xs font-bold text-slate-700 hover:text-brand-navy bg-slate-200/80 px-3 py-2 rounded-xl transition">Detalles</button>
+                        <button type="button" onclick="scrollToMapAndFocus(${item.id})" class="text-xs font-bold text-brand-emeraldDark hover:text-white bg-emerald-100 hover:bg-brand-emerald px-3.5 py-2 rounded-xl transition">Ver en Mapa</button>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        function focusLocationOnMap(id) {
+            const marker = markersMap[id];
+            if (marker) {
+                map.flyTo(OBRAS_OFICIALES.find(a => a.id === id).coords, 16, { animate: true, duration: 1.1 });
+                setTimeout(() => marker.openPopup(), 350);
+            }
+        }
+
+        window.scrollToMapAndFocus = function(id) {
+            document.getElementById('mapa-gestion').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => focusLocationOnMap(id), 550);
+        };
+
+        window.openWorkModal = function(id) {
+            const item = OBRAS_OFICIALES.find(a => a.id === id);
+            if (!item) return;
+            const style = categoryStyles[item.category] || categoryStyles['Social'];
+            const modal = document.getElementById('work-detail-modal');
+
+            document.getElementById('modal-img').src = item.image;
+            document.getElementById('modal-category-badge').className = `absolute top-4 left-4 px-3.5 py-1 rounded-full text-xs font-bold shadow ${style.badgeBg}`;
+            document.getElementById('modal-category-badge').innerHTML = `<i class="fa-solid ${style.icon} mr-1"></i> ${item.category}`;
+            document.getElementById('modal-sector').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${item.sector}`;
+            document.getElementById('modal-title').textContent = item.title;
+            document.getElementById('modal-beneficiaries').textContent = item.beneficiaries;
+            document.getElementById('modal-status').textContent = item.year;
+            document.getElementById('modal-investment').textContent = item.investment;
+            document.getElementById('modal-description').textContent = item.description;
+            document.getElementById('modal-community-quote').textContent = item.quote;
+            document.getElementById('modal-whatsapp-share').href = getShareWhatsAppUrl(item);
+
+            document.getElementById('modal-locate-btn').onclick = () => { closeWorkModal(); scrollToMapAndFocus(item.id); };
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        };
+
+        function closeWorkModal() {
+            document.getElementById('work-detail-modal').classList.add('hidden');
+            document.getElementById('work-detail-modal').classList.remove('flex');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initMap();
+
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+            
+            document.querySelectorAll('.map-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.map-filter-btn').forEach(b => { b.classList.remove('bg-brand-navy', 'text-white'); b.classList.add('bg-white', 'text-slate-700'); });
+                    btn.classList.remove('bg-white', 'text-slate-700'); btn.classList.add('bg-brand-navy', 'text-white');
+                    currentCategory = btn.getAttribute('data-category'); renderMapAndLists();
+                });
+            });
+
+            document.getElementById('map-search-input').addEventListener('input', (e) => { searchQuery = e.target.value; renderMapAndLists(); });
+            document.getElementById('reset-map-btn').addEventListener('click', () => { map.closePopup(); map.flyTo(MAP_CENTER, INITIAL_ZOOM); });
+            document.getElementById('close-modal-btn').addEventListener('click', closeWorkModal);
+
+            /* ============================================================================
+             * LÓGICA CENTRALIZADA PARA FORMULARIO: REGISTRA EN EXCEL Y WHATSAPP
+             * ============================================================================ */
+            
+            const form = document.getElementById('volunteer-form');
+            const successBox = document.getElementById('volunteer-success');
+            
+            // Función única que envía los datos a Google Sheets
+            function registrarEnGoogleSheets(nombre, tel, sector, rol, mensaje) {
+                const formData = new URLSearchParams();
+                formData.append('Nombre', nombre);
+                formData.append('Celular', tel);
+                formData.append('Barrio', sector);
+                formData.append('Apoyo', rol);
+                formData.append('Propuesta', mensaje);
+
+                fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                }).catch(err => console.log('Error de conexión a Sheets:', err));
+            }
+
+            // ACCIÓN 1: Botón de "Registrarme en la web" (Solo Google Sheets)
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('volName').value.trim();
+                const phone = document.getElementById('volPhone').value.trim();
+                const neighborhood = document.getElementById('volSector').value.trim();
+                const role = document.getElementById('volRole').value;
+                const message = document.getElementById('volMessage').value.trim();
+
+                // 1. Envía a la base de datos
+                registrarEnGoogleSheets(name, phone, neighborhood, role, message);
+
+                // 2. Muestra éxito y limpia formulario
+                successBox.classList.remove('hidden');
+                setTimeout(() => { successBox.classList.add('hidden'); form.reset(); }, 8000);
+            });
+
+            // ACCIÓN 2: Botón de "Enviar directo por WhatsApp" (Google Sheets + Abre Chat)
+            document.getElementById('send-whatsapp-btn').addEventListener('click', () => {
+                // Validación estricta: No permite enviar al Excel/WhatsApp si el formulario está vacío
+                if (!form.checkValidity()) {
+                    form.reportValidity(); // Muestra el mensaje en rojo pidiendo llenar los campos
+                    return;
+                }
+
+                const name = document.getElementById('volName').value.trim();
+                const phone = document.getElementById('volPhone').value.trim();
+                const neighborhood = document.getElementById('volSector').value.trim();
+                const role = document.getElementById('volRole').value;
+                const message = document.getElementById('volMessage').value.trim() || 'Quiero apoyar la campaña de Juan David.';
+
+                // 1. Guarda los datos primero en el Google Sheets para no perderlos
+                registrarEnGoogleSheets(name, phone, neighborhood, role, message);
+
+                // 2. Prepara y abre el WhatsApp con los datos
+                const text = `Hola equipo de *Juan David* 👋, me registro desde la página web oficial:\n\n👤 *Nombre:* ${name}\n📱 *Teléfono:* ${phone}\n📍 *Barrio/Sector:* ${neighborhood}\n🤝 *Participación:* ${role}\n💬 *Mensaje/Propuesta:* ${message}`;
+                const url = `https://wa.me/${WHATSAPP_CAMPANA}?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank', 'noopener,noreferrer');
+
+                // 3. Muestra éxito y limpia el formulario
+                successBox.classList.remove('hidden');
+                setTimeout(() => { successBox.classList.add('hidden'); form.reset(); }, 8000);
+            });
+        });
+    </script>
+</body>
+</html>
