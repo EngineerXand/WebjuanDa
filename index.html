@@ -939,8 +939,9 @@
         const OBRAS_OFICIALES = [
             {
                 id: 1,
-                title: "Pavimentación Comunitaria y Alumbrado Público LED",
-                sector: "Ciudad Porfía - Comuna 8",
+                destacado: true,
+                title: "Pavimentación Comunitaria",
+                sector: "Andes - Comuna 1",
                 category: "Infraestructura",
                 coords: [4.0845, -73.6695],
                 beneficiaries: "+4,500 habitantes",
@@ -952,6 +953,7 @@
             },
             {
                 id: 2,
+                destacado: true,
                 title: "Aula STEAM, Robótica y Dotación Tecnológica",
                 sector: "Barrio La Grama / Sector Norte",
                 category: "Educación",
@@ -965,6 +967,7 @@
             },
             {
                 id: 3,
+                destacado: true,
                 title: "Recuperación Integral del Polideportivo y Parque",
                 sector: "Barrio La Esperanza - Comuna 5",
                 category: "Deporte",
@@ -978,6 +981,7 @@
             },
             {
                 id: 4,
+                destacado: true,
                 title: "Centro de Emprendimiento y Capital Semilla para Mujeres",
                 sector: "Sector Barzal Alto - Comuna 2",
                 category: "Social",
@@ -1117,22 +1121,29 @@
                 listItem.innerHTML = `<h4 class="font-display font-bold text-sm text-brand-navy group-hover:text-brand-emeraldDark">${item.title}</h4><p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot"></i> ${item.sector}</p>`;
                 listItem.addEventListener('click', () => focusLocationOnMap(item.id));
                 listContainer.appendChild(listItem);
+                
 
-                const card = document.createElement('div');
-                card.className = 'bg-slate-50 rounded-3xl overflow-hidden border border-slate-200/80 hover:shadow-xl transition-all flex flex-col group';
-                card.innerHTML = `
-                    <div class="relative h-48 bg-slate-900">
-                        <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold ${style.badgeBg}"><i class="fa-solid ${style.icon} mr-1"></i>${item.category}</span>
-                        <span class="absolute bottom-3 left-3 text-white text-xs font-semibold"><i class="fa-solid fa-location-dot text-brand-emerald"></i> ${item.sector}</span>
-                    </div>
-                    <div class="p-6 flex-1"><h3 class="font-display font-bold text-lg text-brand-navy leading-snug">${item.title}</h3></div>
-                    <div class="px-6 pb-5 pt-3 border-t border-slate-200/70 flex justify-between items-center">
-                        <button type="button" onclick="openWorkModal(${item.id})" class="text-xs font-bold text-slate-700 hover:text-brand-navy bg-slate-200/80 px-3 py-2 rounded-xl transition">Detalles</button>
-                        <button type="button" onclick="scrollToMapAndFocus(${item.id})" class="text-xs font-bold text-brand-emeraldDark hover:text-white bg-emerald-100 hover:bg-brand-emerald px-3.5 py-2 rounded-xl transition">Ver en Mapa</button>
-                    </div>
-                `;
-                gridContainer.appendChild(card);
+                if (item.destacado) {
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-slate-50 rounded-3xl overflow-hidden border border-slate-200/80 hover:shadow-xl transition-all flex flex-col group';
+                    card.innerHTML = `
+                        <div class="relative h-48 bg-slate-900">
+                            <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold ${style.badgeBg}"><i class="fa-solid ${style.icon} mr-1"></i>${item.category}</span>
+                            <span class="absolute bottom-3 left-3 text-white text-xs font-semibold"><i class="fa-solid fa-location-dot text-brand-emerald"></i> ${item.sector}</span>
+                        </div>
+                        <div class="p-6 flex-1"><h3 class="font-display font-bold text-lg text-brand-navy leading-snug">${item.title}</h3></div>
+                        <div class="px-6 pb-5 pt-3 border-t border-slate-200/70 flex justify-between items-center">
+                            <button type="button" onclick="openWorkModal(${item.id})" class="text-xs font-bold text-slate-700 hover:text-brand-navy bg-slate-200/80 px-3 py-2 rounded-xl transition">Detalles</button>
+                            <button type="button" onclick="scrollToMapAndFocus(${item.id})" class="text-xs font-bold text-brand-emeraldDark hover:text-white bg-emerald-100 hover:bg-brand-emerald px-3.5 py-2 rounded-xl transition">Ver en Mapa</button>
+                        </div>
+                    `;
+                    gridContainer.appendChild(card);
+
+                    }
+
+                
             });
         }
 
