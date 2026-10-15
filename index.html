@@ -1130,7 +1130,7 @@
                     card.className = 'bg-slate-50 rounded-3xl overflow-hidden border border-slate-200/80 hover:shadow-xl transition-all flex flex-col group';
                     card.innerHTML = `
                         <div class="relative h-48 bg-slate-900">
-                            <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <img src="${item.image}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
                             <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold ${style.badgeBg}"><i class="fa-solid ${style.icon} mr-1"></i>${item.category}</span>
                             <span class="absolute bottom-3 left-3 text-white text-xs font-semibold"><i class="fa-solid fa-location-dot text-brand-emerald"></i> ${item.sector}</span>
                         </div>
